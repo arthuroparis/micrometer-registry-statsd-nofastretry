@@ -56,11 +56,9 @@ def releaseStage = findProperty('release.stage')
 apply plugin: 'com.netflix.nebula.release'
 release.defaultVersionStrategy = nebula.plugin.release.git.opinion.Strategies.SNAPSHOT
 
-apply plugin: 'io.github.gradle-nexus.publish-plugin'
-
 // TODO: arthurosncf
 allprojects {
-    group = 'com.arthurosncf'
+    group = 'io.github.arthurosncf'
     ext.'release.stage' = releaseStage ?: 'SNAPSHOT'
 
     afterEvaluate { project -> println "I'm configuring $project.name with version $project.version" }
@@ -329,7 +327,7 @@ subprojects {
     }
 
     // Do not publish some modules
-    if (!['samples', 'benchmarks', 'micrometer-osgi-test', 'concurrency-tests', 'micrometer-test-aspectj-ctw', 'micrometer-test-aspectj-ltw'].find { project.name.contains(it) }) {
+    if (!['statsd-nofastretry','samples', 'benchmarks', 'micrometer-osgi-test', 'concurrency-tests', 'micrometer-test-aspectj-ctw', 'micrometer-test-aspectj-ltw'].find { project.name.contains(it) }) {
         apply plugin: 'com.netflix.nebula.maven-publish'
         apply plugin: 'com.netflix.nebula.maven-manifest'
         apply plugin: 'com.netflix.nebula.maven-developer'
@@ -453,17 +451,6 @@ subprojects {
 
     def check = tasks.findByName('check')
     if (check) project.rootProject.tasks.releaseCheck.dependsOn check
-}
-
-nexusPublishing {
-    repositories {
-        mavenCentral {
-            nexusUrl.set(uri('https://s01.oss.sonatype.org/service/local/'))
-            snapshotRepositoryUrl.set(uri('https://repo.spring.io/snapshot/')) // not used but necessary for the plugin
-            username = findProperty('MAVEN_CENTRAL_USER')
-            password = findProperty('MAVEN_CENTRAL_PASSWORD')
-        }
-    }
 }
 
 wrapper {
