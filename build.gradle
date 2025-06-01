@@ -58,8 +58,9 @@ release.defaultVersionStrategy = nebula.plugin.release.git.opinion.Strategies.SN
 
 apply plugin: 'io.github.gradle-nexus.publish-plugin'
 
+// TODO: arthurosncf
 allprojects {
-    group = 'io.micrometer'
+    group = 'com.arthurosncf'
     ext.'release.stage' = releaseStage ?: 'SNAPSHOT'
 
     afterEvaluate { project -> println "I'm configuring $project.name with version $project.version" }
@@ -288,21 +289,22 @@ subprojects {
                     suppressAllPomMetadataWarnings()
                 }
             }
+            //TODO: arthurosncf
             repositories {
                 maven {
-                    name = 'Snapshot'
-                    url = 'https://repo.spring.io/snapshot'
+                    name = 'central'
                     credentials {
-                        username findProperty('SNAPSHOT_REPO_USER')
-                        password findProperty('SNAPSHOT_REPO_PASSWORD')
+                        username System.getenv('SNAPSHOT_REPO_USER')
+                        password System.getenv('SNAPSHOT_REPO_PASSWORD')
                     }
                 }
             }
         }
 
+        //TODO: arthurosncf
         signing {
             required = System.env.CIRCLE_STAGE == 'deploy'
-            useInMemoryPgpKeys(findProperty('SIGNING_KEY'), findProperty('SIGNING_PASSWORD'))
+            useInMemoryPgpKeys(System.getenv('SIGNING_KEY'), System.getenv('SIGNING_PASSWORD'))
             sign publishing.publications.nebula
         }
 
