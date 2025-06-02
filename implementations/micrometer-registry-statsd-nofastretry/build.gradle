@@ -4,7 +4,7 @@ plugins {
 }
 
 dependencies {
-    api project(':micrometer-core')
+    implementation(group: 'io.micrometer', name: 'micrometer-core', version: '1.15.0')
 
     implementation platform(libs.reactorBom)
     implementation platform(libs.nettyBom)
@@ -71,8 +71,8 @@ publishOnCentral {
      *
      * They can be further customized through values or providers:
      */
-    mavenCentral.user.set("DWZ0zdQi")
-    mavenCentral.password.set(provider { "3msBO6PCX/NLiDEMsc6L0sVhibVcv2yoxOiZAJ6Jdfly"})
+    mavenCentral.user.set("-")
+    mavenCentral.password.set(provider { "-"})
 
     /*
      * The publications can be sent to other destinations, e.g. GitHub
